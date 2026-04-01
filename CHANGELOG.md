@@ -3,6 +3,19 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.1] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **다국어(i18n) 번역 깨짐 수정**
+  - 관리자 출석 현황(`/admin/attendance`), 설정(`/admin/attendance/settings`) 페이지에서 번역 키가 `lastorder-attendance.admin.attendance.title`처럼 원문 그대로 노출되던 문제 수정
+  - `resources/lang/en.json`, `ko.json`의 플랫(flat) 키 구조를 g7 모듈 표준인 `$partial` 참조 기반 계층형(nested) 구조로 변환
+  - `resources/lang/partial/{en,ko}/admin.json`, `user.json` 파일 추가
+
+- **사용자 출석 페이지 오류 수정**
+  - `/attendance` 접속 시 "Layout data field 'components' must be an array" 오류 발생하던 문제 수정
+  - `resources/layouts/user/user_attendance.json`에 `"extends": "_user_base"` 추가 (g7에서 `extends` 없는 레이아웃은 `components` 필드가 필수이나, 슬롯 기반 레이아웃이므로 `_user_base`를 상속하도록 수정)
+
 ## [1.0.0] - 2026-04-01
 
 ### 추가됨 (Added)
