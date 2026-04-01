@@ -102,12 +102,12 @@ class AttendanceService
         $now = Carbon::now();
 
         try {
-            $startTime = Carbon::createFromFormat('H:i', $this->settingsService->getSetting('allowed_start_time', '01:00'));
-            $endTime = Carbon::createFromFormat('H:i', $this->settingsService->getSetting('allowed_end_time', '23:00'));
+            $startTime = Carbon::createFromFormat('H:i', $this->settingsService->getSetting('allowed_start_time', '00:00'));
+            $endTime = Carbon::createFromFormat('H:i', $this->settingsService->getSetting('allowed_end_time', '23:59'));
         } catch (\Exception) {
             // 설정값이 유효하지 않으면 기본 허용 시간으로 폴백
-            $startTime = Carbon::createFromFormat('H:i', '01:00');
-            $endTime = Carbon::createFromFormat('H:i', '23:00');
+            $startTime = Carbon::createFromFormat('H:i', '00:00');
+            $endTime = Carbon::createFromFormat('H:i', '23:59');
         }
 
         return $now->between($startTime, $endTime);

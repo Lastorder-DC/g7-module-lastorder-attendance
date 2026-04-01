@@ -14,8 +14,8 @@ class AttendanceSettingsSeeder extends Seeder
     {
         $settings = [
             'base_point' => 10,
-            'allowed_start_time' => '01:00',
-            'allowed_end_time' => '23:00',
+            'allowed_start_time' => '00:00',
+            'allowed_end_time' => '23:59',
             'auto_attendance_enabled' => false,
             'auto_attendance_greeting' => '',
             'rank_1_bonus' => 50,

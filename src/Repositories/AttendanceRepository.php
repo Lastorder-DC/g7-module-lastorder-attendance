@@ -147,6 +147,14 @@ class AttendanceRepository implements AttendanceRepositoryInterface
     }
 
     /**
+     * ID로 출석 기록 조회
+     */
+    public function find(int $id): ?Attendance
+    {
+        return $this->model->find($id);
+    }
+
+    /**
      * 출석 기록 생성
      */
     public function create(array $data): Attendance

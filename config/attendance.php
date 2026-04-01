@@ -5,8 +5,8 @@ return [
     'base_point' => 10,
 
     // 출석 가능 시간 (24시간 형식)
-    'allowed_start_time' => '01:00',    // 오전 1시
-    'allowed_end_time' => '23:00',      // 오후 11시
+    'allowed_start_time' => '00:00',    // 자정
+    'allowed_end_time' => '23:59',      // 하루 종일
 
     // 자동출석 설정
     'auto_attendance_enabled' => false,
