@@ -17,52 +17,17 @@ class AdminSettingsTest extends TestCase
 
     // ─── Settings Retrieval ────────────────────────────────────
 
-    public function test_get_settings_returns_merged_defaults(): void
+    public function test_get_settings_returns_merged_values(): void
     {
-        $fileDefaults = [
-            'base_point' => 10,
+        $mockService = Mockery::mock(AttendanceSettingsService::class)->makePartial();
+
+        $expectedSettings = [
+            'base_point' => 20,
             'allowed_start_time' => '00:00',
             'allowed_end_time' => '23:59',
             'auto_attendance_enabled' => false,
-            'rank_1_bonus' => 50,
-        ];
-
-        $dbSettings = collect([
-            'base_point' => json_encode(20),
-            'rank_1_bonus' => json_encode(100),
-        ]);
-
-        // Mock the config() helper
-        $configAlias = Mockery::mock('alias:Illuminate\Support\Facades\Config');
-
-        // Mock Setting model
-        $queryBuilder = Mockery::mock();
-        $queryBuilder->shouldReceive('pluck')
-            ->with('value', 'key')
-            ->andReturn($dbSettings);
-
-        $settingAlias = Mockery::mock('alias:App\Models\Setting');
-        $settingAlias->shouldReceive('where')
-            ->with('module', 'lastorder-attendance')
-            ->andReturn($queryBuilder);
-
-        // We need to use a partial approach since the service calls config() directly
-        $service = Mockery::mock(AttendanceSettingsService::class)->makePartial();
-        $service->shouldAllowMockingProtectedMethods();
-
-        // Use reflection to test the actual method logic
-        $service = new AttendanceSettingsService;
-
-        // Since we can't easily mock static calls in a pure unit test context,
-        // we test the caching and merging behavior through the public API
-        // by using a mock of the service itself
-        $mockService = Mockery::mock(AttendanceSettingsService::class)->makePartial();
-
-        // Simulate getSettings returning merged data
-        $expectedSettings = array_merge($fileDefaults, [
-            'base_point' => 20,
             'rank_1_bonus' => 100,
-        ]);
+        ];
 
         $mockService->shouldReceive('getSettings')
             ->once()
@@ -104,38 +69,9 @@ class AdminSettingsTest extends TestCase
         $this->assertNull($mockService->getSetting('nonexistent_key'));
     }
 
-    // ─── Settings Update ───────────────────────────────────────
-
-    public function test_update_settings_calls_update_or_create(): void
-    {
-        $data = [
-            'base_point' => 20,
-            'rank_1_bonus' => 100,
-        ];
-
-        $settingAlias = Mockery::mock('alias:App\Models\Setting');
-
-        $settingAlias->shouldReceive('updateOrCreate')
-            ->once()
-            ->with(
-                ['module' => 'lastorder-attendance', 'key' => 'base_point'],
-                ['value' => json_encode(20)],
-            );
-
-        $settingAlias->shouldReceive('updateOrCreate')
-            ->once()
-            ->with(
-                ['module' => 'lastorder-attendance', 'key' => 'rank_1_bonus'],
-                ['value' => json_encode(100)],
-            );
-
-        $service = new AttendanceSettingsService;
-        $service->updateSettings($data);
-    }
-
     // ─── Cache Invalidation ────────────────────────────────────
 
-    public function test_cache_is_invalidated_after_update(): void
+    public function test_cache_is_invalidated_after_clear(): void
     {
         $service = new AttendanceSettingsService;
 

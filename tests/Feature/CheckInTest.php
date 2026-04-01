@@ -89,19 +89,27 @@ class CheckInTest extends TestCase
             ->andReturn(1);
 
         // Create attendance record
-        $attendance = Mockery::mock(Attendance::class)->makePartial();
-        $attendance->id = 1;
-        $attendance->user_id = $userId;
-        $attendance->attendance_date = Carbon::parse($today);
-        $attendance->daily_rank = 1;
-        $attendance->consecutive_days = 1;
-        $attendance->total_days = 1;
-        $attendance->base_point = $basePoint;
-        $attendance->random_point = 0;
-        $attendance->total_point = $basePoint;
-        $attendance->greeting = $greeting;
-        $attendance->ip_address = $ip;
-        $attendance->is_auto = false;
+        $attendance = Mockery::mock(Attendance::class)->makePartial()->shouldAllowMockingProtectedMethods();
+        $attendance->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $attendance->shouldReceive('getAttribute')->with('user_id')->andReturn($userId);
+        $attendance->shouldReceive('getAttribute')->with('daily_rank')->andReturn(1);
+        $attendance->shouldReceive('getAttribute')->with('consecutive_days')->andReturn(1);
+        $attendance->shouldReceive('getAttribute')->with('total_days')->andReturn(1);
+        $attendance->shouldReceive('getAttribute')->with('base_point')->andReturn($basePoint);
+        $attendance->shouldReceive('getAttribute')->with('random_point')->andReturn(0);
+        $attendance->shouldReceive('getAttribute')->with('total_point')->andReturn($basePoint);
+        $attendance->shouldReceive('getAttribute')->with('greeting')->andReturn($greeting);
+        $attendance->shouldReceive('getAttribute')->with('ip_address')->andReturn($ip);
+        $attendance->shouldReceive('getAttribute')->with('is_auto')->andReturn(false);
+        $attendance->shouldReceive('getAttribute')->andReturn(null);
+        $attendance->shouldReceive('getAttributeValue')->andReturnUsing(function ($key) use ($userId, $basePoint, $greeting, $ip) {
+            return match ($key) {
+                'id' => 1, 'user_id' => $userId, 'daily_rank' => 1,
+                'consecutive_days' => 1, 'total_days' => 1, 'base_point' => $basePoint,
+                'random_point' => 0, 'total_point' => $basePoint, 'greeting' => $greeting,
+                'ip_address' => $ip, 'is_auto' => false, default => null,
+            };
+        });
 
         $this->attendanceRepo->shouldReceive('create')
             ->once()
@@ -284,8 +292,10 @@ class CheckInTest extends TestCase
 
         Carbon::setTestNow(Carbon::create(2025, 1, 15, 10, 0, 0));
 
-        $yesterdayAttendance = Mockery::mock(Attendance::class);
-        $yesterdayAttendance->consecutive_days = 5;
+        $yesterdayAttendance = Mockery::mock(Attendance::class)->makePartial()->shouldAllowMockingProtectedMethods();
+        $yesterdayAttendance->shouldReceive('getAttribute')->with('consecutive_days')->andReturn(5);
+        $yesterdayAttendance->shouldReceive('getAttribute')->andReturn(null);
+        $yesterdayAttendance->shouldReceive('getAttributeValue')->with('consecutive_days')->andReturn(5);
 
         $this->attendanceRepo->shouldReceive('findByUserAndDate')
             ->with($userId, $yesterday)

@@ -53,10 +53,27 @@ class BonusTest extends TestCase
 
         $data = array_merge($defaults, $attributes);
 
-        $attendance = Mockery::mock(Attendance::class)->makePartial();
-        foreach ($data as $key => $value) {
-            $attendance->{$key} = $value;
-        }
+        $attendance = Mockery::mock(Attendance::class)->shouldIgnoreMissing();
+        $attendance->shouldReceive('getAttribute')->with('id')->andReturn($data['id']);
+        $attendance->shouldReceive('getAttribute')->with('user_id')->andReturn($data['user_id']);
+        $attendance->shouldReceive('getAttribute')->with('attendance_date')->andReturn($data['attendance_date']);
+        $attendance->shouldReceive('getAttribute')->with('daily_rank')->andReturn($data['daily_rank']);
+        $attendance->shouldReceive('getAttribute')->with('consecutive_days')->andReturn($data['consecutive_days']);
+        $attendance->shouldReceive('getAttribute')->with('total_days')->andReturn($data['total_days']);
+
+        $attendance->id = $data['id'];
+        $attendance->user_id = $data['user_id'];
+        $attendance->daily_rank = $data['daily_rank'];
+        $attendance->consecutive_days = $data['consecutive_days'];
+        $attendance->total_days = $data['total_days'];
+
+        // Make attendance_date accessible as property via __get
+        $attendance->shouldReceive('__get')->with('attendance_date')->andReturn($data['attendance_date']);
+        $attendance->shouldReceive('__get')->with('id')->andReturn($data['id']);
+        $attendance->shouldReceive('__get')->with('user_id')->andReturn($data['user_id']);
+        $attendance->shouldReceive('__get')->with('daily_rank')->andReturn($data['daily_rank']);
+        $attendance->shouldReceive('__get')->with('consecutive_days')->andReturn($data['consecutive_days']);
+        $attendance->shouldReceive('__get')->with('total_days')->andReturn($data['total_days']);
 
         return $attendance;
     }
