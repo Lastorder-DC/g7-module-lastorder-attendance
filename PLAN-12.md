@@ -38,7 +38,7 @@
 - [ ] `CheckInRequest` FormRequest 작성
 - [ ] `UpdateSettingsRequest` FormRequest 작성
 - [ ] `AttendanceController` 작성 (사용자 API)
-- [ ] `AttendanceAdminController` 작성 (관리자 출석 현황 API)
+- [ ] `AttendanceAdminController` 작성 (관리자 출석 현황 API, 관리자 수동 연속 출첵 수정 API recalculateConsecutiveDays / recalculateTotalDays 활용)
 - [ ] `AttendanceSettingsController` 작성 (관리자 설정 API)
 - [ ] `AttendanceResource` / `AttendanceListResource` 작성
 - [ ] `AttendanceCalendarResource` 작성
@@ -74,6 +74,7 @@
   - [ ] 날짜별 출석 목록
   - [ ] 필터/검색
   - [ ] 통계 요약
+  - [ ] 관리자 수동 연속 출첵 수정(특정회원 대상 수정 진행할수 있게)
 
 ### Phase 9: 다국어
 
