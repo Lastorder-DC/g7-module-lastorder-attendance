@@ -54,6 +54,11 @@ interface AttendanceRepositoryInterface
     public function getCountByDate(string $date): int;
 
     /**
+     * ID로 출석 기록 조회
+     */
+    public function find(int $id): ?Attendance;
+
+    /**
      * 출석 기록 생성
      */
     public function create(array $data): Attendance;

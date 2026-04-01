@@ -35,24 +35,24 @@
 
 ### Phase 5: HTTP 계층
 
-- [ ] `CheckInRequest` FormRequest 작성
-- [ ] `UpdateSettingsRequest` FormRequest 작성
-- [ ] `AttendanceController` 작성 (사용자 API)
-- [ ] `AttendanceAdminController` 작성 (관리자 출석 현황 API, 관리자 수동 연속 출첵 수정 API recalculateConsecutiveDays / recalculateTotalDays 활용)
-- [ ] `AttendanceSettingsController` 작성 (관리자 설정 API)
-- [ ] `AttendanceResource` / `AttendanceListResource` 작성
-- [ ] `AttendanceCalendarResource` 작성
-- [ ] `AttendanceSettingsResource` 작성
-- [ ] `api.php` 라우트 정의
+- [x] `CheckInRequest` FormRequest 작성
+- [x] `UpdateSettingsRequest` FormRequest 작성
+- [x] `AttendanceController` 작성 (사용자 API)
+- [x] `AttendanceAdminController` 작성 (관리자 출석 현황 API, 관리자 수동 연속 출첵 수정 API recalculateConsecutiveDays / recalculateTotalDays 활용)
+- [x] `AttendanceSettingsController` 작성 (관리자 설정 API)
+- [x] `AttendanceResource` / `AttendanceListResource` 작성
+- [x] `AttendanceCalendarResource` 작성
+- [x] `AttendanceSettingsResource` 작성
+- [x] `api.php` 라우트 정의
 
 ### Phase 6: Service Provider
 
-- [ ] `AttendanceServiceProvider` 작성 (Repository 바인딩)
+- [x] `AttendanceServiceProvider` 작성 (Repository 바인딩)
 
 ### Phase 7: Hook 리스너
 
-- [ ] `AutoAttendanceListener` 작성 (로그인 시 자동출석)
-- [ ] `AttendanceActivityLogListener` 작성 (활동 로그)
+- [x] `AutoAttendanceListener` 작성 (로그인 시 자동출석)
+- [x] `AttendanceActivityLogListener` 작성 (활동 로그)
 
 ### Phase 8: 프론트엔드 (JSON 레이아웃)
 
