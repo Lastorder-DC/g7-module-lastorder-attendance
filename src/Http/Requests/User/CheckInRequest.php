@@ -25,6 +25,18 @@ class CheckInRequest extends FormRequest
     }
 
     /**
+     * 입력값 전처리 (HTML 태그 제거)
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('greeting')) {
+            $this->merge([
+                'greeting' => strip_tags($this->input('greeting')),
+            ]);
+        }
+    }
+
+    /**
      * 사용자 정의 에러 메시지
      */
     public function messages(): array

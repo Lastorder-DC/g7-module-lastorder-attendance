@@ -3,9 +3,9 @@
 namespace Modules\Lastorder\Attendance\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\Base\BaseApiController;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Modules\Lastorder\Attendance\Http\Requests\User\CheckInRequest;
 use Modules\Lastorder\Attendance\Http\Resources\AttendanceCalendarResource;
 use Modules\Lastorder\Attendance\Http\Resources\AttendanceListResource;
@@ -47,7 +47,9 @@ class AttendanceController extends BaseApiController
             );
         } catch (\RuntimeException $e) {
             return $this->error($e->getMessage(), 422);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance check-in failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -69,7 +71,9 @@ class AttendanceController extends BaseApiController
                 'common.success',
                 AttendanceListResource::collection($attendances),
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance today list failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -87,22 +91,18 @@ class AttendanceController extends BaseApiController
 
             $hasCheckedIn = $this->attendanceService->hasCheckedInToday($userId);
 
-            // getConsecutiveDays/getTotalDays는 출석 시 사용하는 "다음 값"을 반환하므로,
-            // 아직 출석하지 않은 경우 현재까지의 실제 값으로 보정합니다.
-            $consecutiveDays = $this->attendanceService->getConsecutiveDays($userId);
-            $totalDays = $this->attendanceService->getTotalDays($userId);
-
-            if (! $hasCheckedIn) {
-                $consecutiveDays = max($consecutiveDays - 1, 0);
-                $totalDays = max($totalDays - 1, 0);
-            }
+            // 저장된 현재 값을 직접 조회 (불필요한 재계산 방지)
+            $consecutiveDays = $this->attendanceService->getCurrentConsecutiveDays($userId);
+            $totalDays = $this->attendanceService->getCurrentTotalDays($userId);
 
             return $this->success('common.success', [
                 'has_checked_in_today' => $hasCheckedIn,
                 'consecutive_days' => $consecutiveDays,
                 'total_days' => $totalDays,
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance my status failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -130,7 +130,9 @@ class AttendanceController extends BaseApiController
                     'calendar' => $calendar,
                 ]),
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance calendar failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -146,7 +148,9 @@ class AttendanceController extends BaseApiController
             return $this->success('common.success', [
                 'greeting' => $this->greetingService->getRandomGreeting(),
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance greeting failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -166,7 +170,9 @@ class AttendanceController extends BaseApiController
                 'has_checked_in_today' => $this->attendanceService->hasCheckedInToday($user->id),
                 'can_check_in' => $this->attendanceService->canCheckIn($user->id),
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Attendance status check failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
