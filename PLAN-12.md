@@ -28,10 +28,10 @@
 
 ### Phase 4: Service 계층
 
-- [ ] `AttendanceService` 작성 (출석 체크 핵심 로직)
-- [ ] `AttendanceBonusService` 작성 (보너스 계산/지급)
-- [ ] `AttendanceSettingsService` 작성 (설정 관리)
-- [ ] `AttendanceGreetingService` 작성 (인삿말 관리)
+- [x] `AttendanceService` 작성 (출석 체크 핵심 로직)
+- [x] `AttendanceBonusService` 작성 (보너스 계산/지급)
+- [x] `AttendanceSettingsService` 작성 (설정 관리)
+- [x] `AttendanceGreetingService` 작성 (인삿말 관리)
 
 ### Phase 5: HTTP 계층
 
