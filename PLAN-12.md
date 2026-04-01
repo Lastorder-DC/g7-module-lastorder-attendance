@@ -21,10 +21,10 @@
 
 ### Phase 3: Repository 계층
 
-- [ ] `AttendanceRepositoryInterface` 작성
-- [ ] `AttendanceRepository` 구현
-- [ ] `AttendanceBonusRepositoryInterface` 작성
-- [ ] `AttendanceBonusRepository` 구현
+- [x] `AttendanceRepositoryInterface` 작성
+- [x] `AttendanceRepository` 구현
+- [x] `AttendanceBonusRepositoryInterface` 작성
+- [x] `AttendanceBonusRepository` 구현
 
 ### Phase 4: Service 계층
 
