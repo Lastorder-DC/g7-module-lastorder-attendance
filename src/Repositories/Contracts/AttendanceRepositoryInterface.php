@@ -24,14 +24,24 @@ interface AttendanceRepositoryInterface
     public function getByUserAndMonth(int $userId, int $year, int $month): Collection;
 
     /**
-     * 연속 출석 일수 계산
+     * 저장된 연속 출석 일수 조회 (가장 최근 출석 기록 기준)
      */
-    public function getConsecutiveDays(int $userId, string $fromDate): int;
+    public function getConsecutiveDays(int $userId): int;
 
     /**
-     * 총 출석 일수
+     * 저장된 총 출석 일수 조회 (가장 최근 출석 기록 기준)
      */
     public function getTotalDays(int $userId): int;
+
+    /**
+     * 연속 출석 일수 재계산 (DB에 값이 없거나 관리자 수동 재계산 시 사용)
+     */
+    public function recalculateConsecutiveDays(int $userId, string $fromDate): int;
+
+    /**
+     * 총 출석 일수 재계산 (DB에 값이 없거나 관리자 수동 재계산 시 사용)
+     */
+    public function recalculateTotalDays(int $userId): int;
 
     /**
      * 당일 출석 순번 (COUNT+1)

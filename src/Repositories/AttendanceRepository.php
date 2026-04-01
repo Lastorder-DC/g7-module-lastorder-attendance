@@ -9,6 +9,11 @@ use Modules\Lastorder\Attendance\Repositories\Contracts\AttendanceRepositoryInte
 
 class AttendanceRepository implements AttendanceRepositoryInterface
 {
+    /**
+     * 연속 출석 일수 재계산 시 최대 조회 범위 (일)
+     */
+    private const MAX_CONSECUTIVE_DAYS_LOOKBACK = 365;
+
     public function __construct(
         protected Attendance $model,
     ) {}
@@ -49,16 +54,43 @@ class AttendanceRepository implements AttendanceRepositoryInterface
     }
 
     /**
-     * 연속 출석 일수 계산
+     * 저장된 연속 출석 일수 조회 (가장 최근 출석 기록 기준)
+     */
+    public function getConsecutiveDays(int $userId): int
+    {
+        $latest = $this->model
+            ->where('user_id', $userId)
+            ->orderByDesc('attendance_date')
+            ->first();
+
+        return $latest?->consecutive_days ?? 0;
+    }
+
+    /**
+     * 저장된 총 출석 일수 조회 (가장 최근 출석 기록 기준)
+     */
+    public function getTotalDays(int $userId): int
+    {
+        $latest = $this->model
+            ->where('user_id', $userId)
+            ->orderByDesc('attendance_date')
+            ->first();
+
+        return $latest?->total_days ?? 0;
+    }
+
+    /**
+     * 연속 출석 일수 재계산 (DB에 값이 없거나 관리자 수동 재계산 시 사용)
      *
      * 지정 날짜로부터 역순으로 연속된 출석 일수를 계산합니다.
      */
-    public function getConsecutiveDays(int $userId, string $fromDate): int
+    public function recalculateConsecutiveDays(int $userId, string $fromDate): int
     {
         $attendances = $this->model
             ->where('user_id', $userId)
             ->where('attendance_date', '<=', $fromDate)
             ->orderByDesc('attendance_date')
+            ->limit(self::MAX_CONSECUTIVE_DAYS_LOOKBACK)
             ->pluck('attendance_date');
 
         if ($attendances->isEmpty()) {
@@ -83,9 +115,9 @@ class AttendanceRepository implements AttendanceRepositoryInterface
     }
 
     /**
-     * 총 출석 일수
+     * 총 출석 일수 재계산 (DB에 값이 없거나 관리자 수동 재계산 시 사용)
      */
-    public function getTotalDays(int $userId): int
+    public function recalculateTotalDays(int $userId): int
     {
         return $this->model
             ->where('user_id', $userId)
