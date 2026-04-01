@@ -86,13 +86,21 @@ class AttendanceController extends BaseApiController
             $userId = $user->id;
 
             $hasCheckedIn = $this->attendanceService->hasCheckedInToday($userId);
+
+            // getConsecutiveDays/getTotalDays는 출석 시 사용하는 "다음 값"을 반환하므로,
+            // 아직 출석하지 않은 경우 현재까지의 실제 값으로 보정합니다.
             $consecutiveDays = $this->attendanceService->getConsecutiveDays($userId);
             $totalDays = $this->attendanceService->getTotalDays($userId);
 
+            if (! $hasCheckedIn) {
+                $consecutiveDays = max($consecutiveDays - 1, 0);
+                $totalDays = max($totalDays - 1, 0);
+            }
+
             return $this->success('common.success', [
                 'has_checked_in_today' => $hasCheckedIn,
-                'consecutive_days' => $hasCheckedIn ? $consecutiveDays : max($consecutiveDays - 1, 0),
-                'total_days' => $hasCheckedIn ? $totalDays : max($totalDays - 1, 0),
+                'consecutive_days' => $consecutiveDays,
+                'total_days' => $totalDays,
             ]);
         } catch (Exception $e) {
             return $this->error('common.failed', 500);
