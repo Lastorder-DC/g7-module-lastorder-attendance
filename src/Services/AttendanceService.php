@@ -263,7 +263,11 @@ class AttendanceService
         $max = (int) $this->settingsService->getSetting('random_point_max', 100);
 
         if ($min > $max) {
-            return $min;
+            Log::warning('Attendance: 랜덤 포인트 최소값이 최대값보다 큽니다. 값을 교환합니다.', [
+                'min' => $min,
+                'max' => $max,
+            ]);
+            [$min, $max] = [$max, $min];
         }
 
         return random_int($min, $max);
