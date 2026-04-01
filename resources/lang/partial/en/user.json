@@ -1,0 +1,49 @@
+{
+  "title": "Attendance",
+  "check_in": "Check In",
+  "checked_in": "Attendance completed.",
+  "checked_in_notice": "You can only check in once a day. Please come back tomorrow!",
+  "greeting_placeholder": "Enter your greeting",
+  "calendar": {
+    "attended": "Attended",
+    "absent": "Absent",
+    "future": "Not yet",
+    "notice": "* Previous months are viewable up to your registration date."
+  },
+  "table": {
+    "rank": "Rank",
+    "time": "Time",
+    "greeting": "Greeting",
+    "nickname": "Nickname",
+    "point": "Point",
+    "random_point": "Random Point",
+    "consecutive": "Streak",
+    "total_days": "Total Days",
+    "miss": "Miss"
+  },
+  "summary": {
+    "attendance_point": "Attendance Point",
+    "attendance_time": "Check-in Time",
+    "consecutive_point": "Streak Bonus",
+    "progress_status": "Status",
+    "ranking_point": "Rank Bonus",
+    "attendance_status": "Attendance",
+    "attendance_auth": "Access",
+    "consecutive_category": "Streak Category",
+    "status_available": "Available",
+    "status_closed": "Closed",
+    "completed": "Completed",
+    "not_completed": "Not yet",
+    "logged_in": "Logged In",
+    "guest": "Guest",
+    "all_day": "All Day",
+    "view_detail": "View Detail"
+  },
+  "nav": {
+    "prev_month": "Previous",
+    "this_month": "This Month",
+    "next_month": "Next"
+  },
+  "consecutive_days": "{days} days",
+  "total_days_suffix": "{days} days"
+}

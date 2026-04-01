@@ -1,6 +1,7 @@
 {
     "version": "1.0.0",
     "layout_name": "user_attendance",
+    "extends": "_user_base",
     "meta": {
         "title": "$t:lastorder-attendance.user.title"
     },
