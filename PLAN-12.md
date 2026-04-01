@@ -85,29 +85,29 @@
 
 ### Phase 10: 테스트
 
-- [ ] `Feature/CheckInTest.php` — 출석 체크 기능 테스트
+- [x] `Feature/CheckInTest.php` — 출석 체크 기능 테스트
   - 정상 출석
   - 중복 출석 방지
   - 출석 가능 시간 외 출석 시도
   - 비로그인 출석 시도
-- [ ] `Feature/BonusTest.php` — 보너스 지급 테스트
+- [x] `Feature/BonusTest.php` — 보너스 지급 테스트
   - 순위 보너스 (1~3위)
   - 연속출석 보너스 (7일, 30일, 365일)
   - 랜덤 포인트
-- [ ] `Feature/AutoAttendanceTest.php` — 자동출석 테스트
+- [x] `Feature/AutoAttendanceTest.php` — 자동출석 테스트
   - 자동출석 활성화/비활성화
   - 로그인 시 자동출석 동작
-- [ ] `Feature/AdminSettingsTest.php` — 관리자 설정 테스트
+- [x] `Feature/AdminSettingsTest.php` — 관리자 설정 테스트
   - 설정 조회/수정
   - 유효하지 않은 설정값 검증
-- [ ] `Unit/AttendanceServiceTest.php` — 서비스 단위 테스트
-- [ ] `Unit/AttendanceBonusServiceTest.php` — 보너스 서비스 단위 테스트
+- [x] `Unit/AttendanceServiceTest.php` — 서비스 단위 테스트
+- [x] `Unit/AttendanceBonusServiceTest.php` — 보너스 서비스 단위 테스트
 
 ### Phase 11: 마무리
 
-- [ ] `CHANGELOG.md` 작성
-- [ ] `README.md` 작성 (설치 가이드, 기능 설명)
-- [ ] 코드 스타일 검증 (Laravel Pint, PSR-12)
-- [ ] 전체 테스트 실행 및 검증
+- [x] `CHANGELOG.md` 작성
+- [x] `README.md` 작성 (설치 가이드, 기능 설명)
+- [x] 코드 스타일 검증 (Laravel Pint, PSR-12)
+- [x] 전체 테스트 실행 및 검증
 
 ---
