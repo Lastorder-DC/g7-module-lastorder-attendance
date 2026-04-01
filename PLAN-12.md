@@ -11,13 +11,13 @@
 
 ### Phase 2: 데이터베이스
 
-- [ ] `attendances` 테이블 마이그레이션 작성
-- [ ] `attendance_bonuses` 테이블 마이그레이션 작성
-- [ ] `Attendance` 모델 작성
-- [ ] `AttendanceBonus` 모델 작성
-- [ ] `AttendanceFactory` 작성 (테스트용)
-- [ ] `AttendanceSettingsSeeder` 작성 (기본 설정값)
-- [ ] `DefaultGreetingsSeeder` 작성 (기본 인삿말)
+- [x] `attendances` 테이블 마이그레이션 작성
+- [x] `attendance_bonuses` 테이블 마이그레이션 작성
+- [x] `Attendance` 모델 작성
+- [x] `AttendanceBonus` 모델 작성
+- [x] `AttendanceFactory` 작성 (테스트용)
+- [x] `AttendanceSettingsSeeder` 작성 (기본 설정값)
+- [x] `DefaultGreetingsSeeder` 작성 (기본 인삿말)
 
 ### Phase 3: Repository 계층
 
