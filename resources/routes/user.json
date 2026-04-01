@@ -1,0 +1,13 @@
+{
+    "version": "1.0.0",
+    "routes": [
+        {
+            "path": "*/attendance",
+            "layout": "user_attendance",
+            "auth_required": false,
+            "meta": {
+                "title": "$t:lastorder-attendance.user.title"
+            }
+        }
+    ]
+}

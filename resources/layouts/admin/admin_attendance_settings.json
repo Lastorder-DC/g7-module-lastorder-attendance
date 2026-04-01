@@ -1,0 +1,849 @@
+{
+    "version": "1.0.0",
+    "layout_name": "admin_attendance_settings",
+    "permissions": ["lastorder-attendance.settings.read"],
+    "extends": "_admin_base",
+    "meta": {
+        "title": "$t:lastorder-attendance.admin.settings.title"
+    },
+    "state": {},
+    "initLocal": {
+        "form": {},
+        "isSaving": false,
+        "hasChanges": false,
+        "errors": null,
+        "newGreeting": ""
+    },
+    "data_sources": [
+        {
+            "id": "settings",
+            "type": "api",
+            "endpoint": "/api/modules/lastorder-attendance/admin/settings",
+            "method": "GET",
+            "auto_fetch": true,
+            "auth_required": true,
+            "refetchOnMount": true,
+            "initLocal": "form",
+            "cache": false,
+            "errorHandling": {
+                "403": {
+                    "handler": "showErrorPage",
+                    "params": { "target": "content" }
+                }
+            }
+        }
+    ],
+    "computed": {
+        "isReadOnly": "{{!!settings?.data && settings?.data?.abilities?.can_update !== true}}"
+    },
+    "slots": {
+        "content": [
+            {
+                "id": "settings_page",
+                "type": "basic",
+                "name": "Div",
+                "blur_until_loaded": true,
+                "dataKey": "form",
+                "trackChanges": true,
+                "props": {
+                    "className": "p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900 min-h-screen"
+                },
+                "children": [
+                    {
+                        "id": "page_header",
+                        "type": "composite",
+                        "name": "PageHeader",
+                        "props": {
+                            "title": "$t:lastorder-attendance.admin.settings.title",
+                            "backUrl": "/admin/attendance",
+                            "actions": [
+                                {
+                                    "label": "$t:lastorder-attendance.admin.settings.save",
+                                    "icon": "fas fa-save",
+                                    "variant": "primary",
+                                    "disabled": "{{_local.isSaving || !_local.hasChanges}}",
+                                    "loading": "{{_local.isSaving}}",
+                                    "action": {
+                                        "handler": "sequence",
+                                        "actions": [
+                                            {
+                                                "handler": "setState",
+                                                "params": {
+                                                    "target": "local",
+                                                    "isSaving": true,
+                                                    "errors": null
+                                                }
+                                            },
+                                            {
+                                                "handler": "apiCall",
+                                                "auth_required": true,
+                                                "target": "/api/modules/lastorder-attendance/admin/settings",
+                                                "params": {
+                                                    "method": "PUT",
+                                                    "body": "{{_local.form}}"
+                                                },
+                                                "onSuccess": [
+                                                    {
+                                                        "handler": "setState",
+                                                        "params": {
+                                                            "target": "local",
+                                                            "isSaving": false,
+                                                            "hasChanges": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "handler": "toast",
+                                                        "params": {
+                                                            "type": "success",
+                                                            "message": "$t:lastorder-attendance.admin.settings.saved"
+                                                        }
+                                                    },
+                                                    {
+                                                        "handler": "refetchDataSource",
+                                                        "params": { "dataSourceId": "settings" }
+                                                    }
+                                                ],
+                                                "onError": [
+                                                    {
+                                                        "handler": "setState",
+                                                        "params": {
+                                                            "target": "local",
+                                                            "isSaving": false,
+                                                            "errors": "{{error.errors}}"
+                                                        }
+                                                    },
+                                                    {
+                                                        "handler": "toast",
+                                                        "params": {
+                                                            "type": "error",
+                                                            "message": "{{error.message}}"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "settings_form",
+                        "type": "basic",
+                        "name": "Div",
+                        "props": {
+                            "className": "space-y-6 mt-6 max-w-3xl"
+                        },
+                        "children": [
+                            {
+                                "id": "section_basic",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.basic"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "id": "field_base_point",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.base_point"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "base_point",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "if": "{{_local.errors?.base_point}}",
+                                                        "props": { "className": "text-red-500 text-xs" },
+                                                        "text": "{{_local.errors?.base_point?.[0] ?? ''}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_allowed_start_time",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.allowed_start_time"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "allowed_start_time",
+                                                            "type": "time",
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "if": "{{_local.errors?.allowed_start_time}}",
+                                                        "props": { "className": "text-red-500 text-xs" },
+                                                        "text": "{{_local.errors?.allowed_start_time?.[0] ?? ''}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_allowed_end_time",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.allowed_end_time"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "allowed_end_time",
+                                                            "type": "time",
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "if": "{{_local.errors?.allowed_end_time}}",
+                                                        "props": { "className": "text-red-500 text-xs" },
+                                                        "text": "{{_local.errors?.allowed_end_time?.[0] ?? ''}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_per_page",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.per_page"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "per_page",
+                                                            "type": "number",
+                                                            "min": 1,
+                                                            "max": 100,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "if": "{{_local.errors?.per_page}}",
+                                                        "props": { "className": "text-red-500 text-xs" },
+                                                        "text": "{{_local.errors?.per_page?.[0] ?? ''}}"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "section_auto",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.auto"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "id": "field_auto_enabled",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "flex items-center justify-between" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.auto_attendance_enabled"
+                                                    },
+                                                    {
+                                                        "type": "composite",
+                                                        "name": "Toggle",
+                                                        "props": {
+                                                            "name": "auto_attendance_enabled",
+                                                            "checked": "{{_local.form?.auto_attendance_enabled ?? false}}"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_auto_greeting",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.auto_attendance_greeting"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "auto_attendance_greeting",
+                                                            "type": "text",
+                                                            "maxLength": 200,
+                                                            "placeholder": "$t:lastorder-attendance.admin.settings.auto_attendance_greeting_help",
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Span",
+                                                        "props": { "className": "text-xs text-gray-500 dark:text-gray-400" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.auto_attendance_greeting_help"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "section_rank_bonus",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.rank_bonus"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "id": "field_rank_1_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.rank_1_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "rank_1_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_rank_2_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.rank_2_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "rank_2_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_rank_3_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.rank_3_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "rank_3_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "section_consecutive_bonus",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.consecutive_bonus"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "id": "field_weekly_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.weekly_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "weekly_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_monthly_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.monthly_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "monthly_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_yearly_bonus",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.yearly_bonus"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "yearly_bonus",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "section_random_point",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.random_point"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-4" },
+                                        "children": [
+                                            {
+                                                "id": "field_random_enabled",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "flex items-center justify-between" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.random_point_enabled"
+                                                    },
+                                                    {
+                                                        "type": "composite",
+                                                        "name": "Toggle",
+                                                        "props": {
+                                                            "name": "random_point_enabled",
+                                                            "checked": "{{_local.form?.random_point_enabled ?? false}}"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_random_min",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.random_point_min"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "random_point_min",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_random_max",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.random_point_max"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "random_point_max",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100000,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "field_random_chance",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "space-y-1" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Label",
+                                                        "props": { "className": "block text-sm font-medium text-gray-900 dark:text-white" },
+                                                        "text": "$t:lastorder-attendance.admin.settings.random_point_chance"
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "name": "random_point_chance",
+                                                            "type": "number",
+                                                            "min": 0,
+                                                            "max": 100,
+                                                            "className": "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "section_greetings",
+                                "type": "layout",
+                                "name": "SectionLayout",
+                                "props": {
+                                    "background": "white",
+                                    "border": true,
+                                    "shadow": "md",
+                                    "rounded": true,
+                                    "padding": "xl",
+                                    "className": "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" },
+                                        "text": "$t:lastorder-attendance.admin.settings.section.greetings"
+                                    },
+                                    {
+                                        "type": "basic",
+                                        "name": "Div",
+                                        "props": { "className": "space-y-3" },
+                                        "children": [
+                                            {
+                                                "id": "greetings_list",
+                                                "type": "basic",
+                                                "name": "ForEach",
+                                                "props": {
+                                                    "items": "{{_local.form?.default_greetings ?? []}}"
+                                                },
+                                                "template": {
+                                                    "type": "basic",
+                                                    "name": "Div",
+                                                    "props": { "className": "flex items-center gap-2" },
+                                                    "children": [
+                                                        {
+                                                            "type": "basic",
+                                                            "name": "Input",
+                                                            "props": {
+                                                                "type": "text",
+                                                                "value": "{{item}}",
+                                                                "maxLength": 200,
+                                                                "className": "flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                            },
+                                                            "actions": [
+                                                                {
+                                                                    "type": "change",
+                                                                    "handler": "setState",
+                                                                    "params": {
+                                                                        "target": "local",
+                                                                        "form": "{{(() => { const f = {..._local.form}; const g = [...(f.default_greetings ?? [])]; g[index] = $event.target.value; f.default_greetings = g; return f; })()}}"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "basic",
+                                                            "name": "Button",
+                                                            "props": {
+                                                                "className": "px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm transition-colors"
+                                                            },
+                                                            "actions": [
+                                                                {
+                                                                    "type": "click",
+                                                                    "handler": "setState",
+                                                                    "params": {
+                                                                        "target": "local",
+                                                                        "form": "{{(() => { const f = {..._local.form}; const g = [...(f.default_greetings ?? [])]; g.splice(index, 1); f.default_greetings = g; return f; })()}}"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "text": "$t:lastorder-attendance.admin.settings.remove_greeting"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "id": "add_greeting_row",
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "props": { "className": "flex items-center gap-2 mt-2" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Input",
+                                                        "props": {
+                                                            "type": "text",
+                                                            "value": "{{_local.newGreeting ?? ''}}",
+                                                            "placeholder": "$t:lastorder-attendance.user.greeting_placeholder",
+                                                            "maxLength": 200,
+                                                            "className": "flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm"
+                                                        },
+                                                        "actions": [
+                                                            {
+                                                                "type": "change",
+                                                                "handler": "setState",
+                                                                "params": {
+                                                                    "target": "local",
+                                                                    "newGreeting": "{{$event.target.value}}"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Button",
+                                                        "props": {
+                                                            "disabled": "{{!_local.newGreeting}}",
+                                                            "className": "px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm font-medium transition-colors"
+                                                        },
+                                                        "actions": [
+                                                            {
+                                                                "type": "click",
+                                                                "handler": "sequence",
+                                                                "actions": [
+                                                                    {
+                                                                        "handler": "setState",
+                                                                        "params": {
+                                                                            "target": "local",
+                                                                            "form": "{{(() => { const f = {..._local.form}; f.default_greetings = [...(f.default_greetings ?? []), _local.newGreeting]; return f; })()}}"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "handler": "setState",
+                                                                        "params": {
+                                                                            "target": "local",
+                                                                            "newGreeting": ""
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "text": "$t:lastorder-attendance.admin.settings.add_greeting"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
