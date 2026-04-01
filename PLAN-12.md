@@ -2,12 +2,12 @@
 
 ### Phase 1: 프로젝트 기본 구조 설정
 
-- [ ] `module.json` 작성
-- [ ] `module.php` (Module 클래스) 작성
-- [ ] `composer.json` 작성
-- [ ] 기본 디렉토리 구조 생성
-- [ ] `config/attendance.php` 설정 파일 작성
-- [ ] `LICENSE` 파일 추가
+- [x] `module.json` 작성
+- [x] `module.php` (Module 클래스) 작성
+- [x] `composer.json` 작성
+- [x] 기본 디렉토리 구조 생성
+- [x] `config/attendance.php` 설정 파일 작성
+- [x] `LICENSE` 파일 추가
 
 ### Phase 2: 데이터베이스
 
