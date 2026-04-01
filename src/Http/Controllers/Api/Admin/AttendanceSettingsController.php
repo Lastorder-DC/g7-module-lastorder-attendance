@@ -3,8 +3,8 @@
 namespace Modules\Lastorder\Attendance\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Api\Base\AdminBaseController;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Modules\Lastorder\Attendance\Http\Requests\Admin\UpdateSettingsRequest;
 use Modules\Lastorder\Attendance\Http\Resources\AttendanceSettingsResource;
 use Modules\Lastorder\Attendance\Services\AttendanceSettingsService;
@@ -32,7 +32,9 @@ class AttendanceSettingsController extends AdminBaseController
                 'common.success',
                 new AttendanceSettingsResource($settings),
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin settings index failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -53,7 +55,9 @@ class AttendanceSettingsController extends AdminBaseController
                 'common.success',
                 new AttendanceSettingsResource($settings),
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin settings update failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }

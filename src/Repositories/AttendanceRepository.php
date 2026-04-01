@@ -30,11 +30,12 @@ class AttendanceRepository implements AttendanceRepositoryInterface
     }
 
     /**
-     * 날짜별 출석 목록 (페이지네이션)
+     * 날짜별 출석 목록 (페이지네이션, user eager loading 포함)
      */
     public function getByDate(string $date, int $page = 1, int $perPage = 20): LengthAwarePaginator
     {
         return $this->model
+            ->with('user')
             ->where('attendance_date', $date)
             ->orderBy('daily_rank')
             ->paginate($perPage, ['*'], 'page', $page);

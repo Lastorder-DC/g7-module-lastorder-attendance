@@ -4,9 +4,9 @@ namespace Modules\Lastorder\Attendance\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Api\Base\AdminBaseController;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Modules\Lastorder\Attendance\Http\Resources\AttendanceListResource;
 use Modules\Lastorder\Attendance\Repositories\Contracts\AttendanceRepositoryInterface;
 use Modules\Lastorder\Attendance\Services\AttendanceService;
@@ -39,7 +39,9 @@ class AttendanceAdminController extends AdminBaseController
                 'common.success',
                 AttendanceListResource::collection($attendances),
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin attendance index failed', ['error' => $e->getMessage()]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -61,7 +63,12 @@ class AttendanceAdminController extends AdminBaseController
             $attendance->delete();
 
             return $this->success('common.success');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin attendance delete failed', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+            ]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -81,7 +88,12 @@ class AttendanceAdminController extends AdminBaseController
                 'user_id' => $userId,
                 'consecutive_days' => $consecutiveDays,
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin recalculate consecutive days failed', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+
             return $this->error('common.failed', 500);
         }
     }
@@ -100,7 +112,12 @@ class AttendanceAdminController extends AdminBaseController
                 'user_id' => $userId,
                 'total_days' => $totalDays,
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            Log::error('Admin recalculate total days failed', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+
             return $this->error('common.failed', 500);
         }
     }
