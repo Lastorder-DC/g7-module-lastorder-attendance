@@ -2,7 +2,7 @@
     "name": "modules/lastorder-attendance",
     "description": "Daily attendance check-in and point reward module for Gnuboard7",
     "type": "library",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "license": "MIT",
     "autoload": {
         "psr-4": {
