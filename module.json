@@ -5,7 +5,7 @@
         "ko": "출석부",
         "en": "Attendance"
     },
-    "version": "1.0.4",
+    "version": "1.0.5",
     "license": "MIT",
     "description": {
         "ko": "매일 출석 체크 및 포인트 보상 모듈",
