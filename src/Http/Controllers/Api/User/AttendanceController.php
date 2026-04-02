@@ -12,6 +12,7 @@ use Modules\Lastorder\Attendance\Http\Resources\AttendanceListResource;
 use Modules\Lastorder\Attendance\Http\Resources\AttendanceResource;
 use Modules\Lastorder\Attendance\Services\AttendanceGreetingService;
 use Modules\Lastorder\Attendance\Services\AttendanceService;
+use Modules\Lastorder\Attendance\Services\AttendanceSettingsService;
 
 /**
  * 사용자 출석 API 컨트롤러
@@ -21,6 +22,7 @@ class AttendanceController extends BaseApiController
     public function __construct(
         private readonly AttendanceService $attendanceService,
         private readonly AttendanceGreetingService $greetingService,
+        private readonly AttendanceSettingsService $settingsService,
     ) {}
 
     /**
@@ -172,6 +174,29 @@ class AttendanceController extends BaseApiController
             ]);
         } catch (\Exception $e) {
             Log::error('Attendance status check failed', ['error' => $e->getMessage()]);
+
+            return $this->error('common.failed', 500);
+        }
+    }
+
+    /**
+     * 보너스 설정 정보 (공개)
+     *
+     * GET /api/modules/lastorder-attendance/bonus-settings
+     */
+    public function bonusSettings(): JsonResponse
+    {
+        try {
+            return $this->success('common.success', [
+                'rank_1_bonus' => (int) $this->settingsService->getSetting('rank_1_bonus', 50),
+                'rank_2_bonus' => (int) $this->settingsService->getSetting('rank_2_bonus', 30),
+                'rank_3_bonus' => (int) $this->settingsService->getSetting('rank_3_bonus', 20),
+                'weekly_bonus' => (int) $this->settingsService->getSetting('weekly_bonus', 100),
+                'monthly_bonus' => (int) $this->settingsService->getSetting('monthly_bonus', 500),
+                'yearly_bonus' => (int) $this->settingsService->getSetting('yearly_bonus', 5000),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Attendance bonus settings failed', ['error' => $e->getMessage()]);
 
             return $this->error('common.failed', 500);
         }

@@ -2,10 +2,10 @@
 
 namespace Modules\Lastorder\Attendance\Http\Resources;
 
+use App\Http\Resources\BaseApiResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class AttendanceCalendarResource extends JsonResource
+class AttendanceCalendarResource extends BaseApiResource
 {
     /**
      * 월별 출석 캘린더 리소스

@@ -5,11 +5,10 @@
     "meta": {
         "title": "$t:lastorder-attendance.user.title"
     },
-    "state": {
-        "currentYear": null,
-        "currentMonth": null
-    },
+    "state": {},
     "initLocal": {
+        "currentYear": null,
+        "currentMonth": null,
         "greeting": "",
         "isSaving": false,
         "errors": null,
@@ -105,18 +104,20 @@
         {
             "id": "settings",
             "type": "api",
-            "endpoint": "/api/modules/lastorder-attendance/admin/settings",
+            "endpoint": "/api/modules/lastorder-attendance/bonus-settings",
             "method": "GET",
             "auto_fetch": true,
-            "auth_required": true,
+            "auth_required": false,
             "cache": false,
-            "errorHandling": {
-                "403": {
-                    "handler": "ignore"
-                }
-            },
             "fallback": {
-                "data": null
+                "data": {
+                    "rank_1_bonus": 0,
+                    "rank_2_bonus": 0,
+                    "rank_3_bonus": 0,
+                    "weekly_bonus": 0,
+                    "monthly_bonus": 0,
+                    "yearly_bonus": 0
+                }
             }
         }
     ],
@@ -1329,19 +1330,32 @@
                                                         "type": "basic",
                                                         "name": "Div",
                                                         "props": { "className": "w-28 shrink-0 text-center px-3 py-3 text-sm" },
-                                                        "text": "{{row.random_point > 0 ? ('● ' + row.random_point) : $t('lastorder-attendance.user.table.miss')}}"
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "if": "{{row.random_point > 0}}",
+                                                                "text": "{{'● ' + row.random_point}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "if": "{{!row.random_point || row.random_point <= 0}}",
+                                                                "text": "$t:lastorder-attendance.user.table.miss"
+                                                            }
+                                                        ]
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Div",
                                                         "props": { "className": "w-20 shrink-0 text-center px-3 py-3 text-sm" },
-                                                        "text": "{{row.consecutive_days + '일째'}}"
+                                                        "text": "{{row.consecutive_days}}"
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Div",
                                                         "props": { "className": "w-24 shrink-0 text-center px-3 py-3 text-sm" },
-                                                        "text": "{{row.total_days + '일'}}"
+                                                        "text": "{{row.total_days}}"
                                                     }
                                                 ]
                                             },

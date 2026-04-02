@@ -35,7 +35,7 @@ class AttendanceAdminController extends AdminBaseController
 
             $attendances = $this->attendanceRepository->getByDate($date, $page, $perPage);
 
-            return $this->successWithResource(
+            return $this->success(
                 'common.success',
                 AttendanceListResource::collection($attendances),
             );

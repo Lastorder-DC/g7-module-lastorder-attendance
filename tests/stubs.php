@@ -210,6 +210,18 @@ namespace {
         }
     }
 
+    if (! function_exists('__')) {
+        function __(string $key, array $replace = [], ?string $locale = null): string
+        {
+            $result = $key;
+            foreach ($replace as $search => $value) {
+                $result = str_replace(':'.$search, (string) $value, $result);
+            }
+
+            return $result;
+        }
+    }
+
     if (! function_exists('config')) {
         function config($key = null, $default = null)
         {
