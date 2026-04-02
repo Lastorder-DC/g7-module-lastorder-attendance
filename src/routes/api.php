@@ -46,6 +46,10 @@ Route::middleware(['optional.sanctum'])->group(function () {
     // 랜덤 인삿말 조회
     Route::get('/greeting', [AttendanceController::class, 'greeting'])
         ->name('greeting');
+
+    // 보너스 설정 정보 (공개)
+    Route::get('/bonus-settings', [AttendanceController::class, 'bonusSettings'])
+        ->name('bonus-settings');
 });
 
 // ─── 관리자 API ────────────────────────────────────────────

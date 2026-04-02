@@ -29,12 +29,15 @@ class AttendanceService
     public function checkIn(int $userId, string $greeting, ?string $ip = null): Attendance
     {
         if (! $this->isWithinAllowedTime()) {
-            throw new \RuntimeException('출석 가능 시간이 아닙니다.');
+            throw new \RuntimeException(__('lastorder-attendance::attendance.not_allowed_time', [
+                'start' => $this->settingsService->getSetting('allowed_start_time', '00:00'),
+                'end' => $this->settingsService->getSetting('allowed_end_time', '23:59'),
+            ]));
         }
 
         // 빠른 사전 체크 (대부분의 중복 요청을 트랜잭션 없이 차단)
         if ($this->hasCheckedInToday($userId)) {
-            throw new \RuntimeException('오늘 이미 출석하였습니다.');
+            throw new \RuntimeException(__('lastorder-attendance::attendance.already_checked_in'));
         }
 
         $today = Carbon::today()->toDateString();
@@ -52,7 +55,7 @@ class AttendanceService
             ) {
                 // 트랜잭션 내 중복 체크 (레이스 컨디션 방지)
                 if ($this->hasCheckedInToday($userId)) {
-                    throw new \RuntimeException('오늘 이미 출석하였습니다.');
+                    throw new \RuntimeException(__('lastorder-attendance::attendance.already_checked_in'));
                 }
 
                 // 연속/총 출석 일수는 DB 저장값에서 조회 (재계산 불필요)
@@ -89,7 +92,7 @@ class AttendanceService
         } catch (QueryException $e) {
             // unique 제약조건 위반 시 (동시 요청으로 인한 중복)
             if (str_contains($e->getMessage(), 'Duplicate entry') || str_contains($e->getMessage(), 'UNIQUE constraint')) {
-                throw new \RuntimeException('오늘 이미 출석하였습니다.');
+                throw new \RuntimeException(__('lastorder-attendance::attendance.already_checked_in'));
             }
             throw $e;
         }

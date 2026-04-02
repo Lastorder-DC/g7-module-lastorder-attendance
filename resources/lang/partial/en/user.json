@@ -20,6 +20,8 @@
     "consecutive": "Streak",
     "total_days": "Total Days",
     "miss": "Miss",
+    "days_streak_suffix": " days",
+    "days_total_suffix": " days",
     "no_data": "No attendance records for today."
   },
   "summary": {

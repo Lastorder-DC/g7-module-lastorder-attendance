@@ -54,7 +54,7 @@
                                     "name": "Icon",
                                     "props": {
                                         "name": "calendar-check",
-                                        "className": "w-5 h-5"
+                                        "className": "text-lg"
                                     }
                                 },
                                 {

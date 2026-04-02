@@ -2,10 +2,10 @@
 
 namespace Modules\Lastorder\Attendance\Http\Resources;
 
+use App\Http\Resources\BaseApiResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class AttendanceSettingsResource extends JsonResource
+class AttendanceSettingsResource extends BaseApiResource
 {
     /**
      * 출석부 설정 리소스

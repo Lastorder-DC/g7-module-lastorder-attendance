@@ -174,7 +174,7 @@ class CheckInTest extends TestCase
             ->andReturn($existingAttendance);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('오늘 이미 출석하였습니다.');
+        $this->expectExceptionMessage('lastorder-attendance::attendance.already_checked_in');
 
         $this->service->checkIn($userId, '안녕하세요!');
 
@@ -194,7 +194,7 @@ class CheckInTest extends TestCase
             ->andReturn('18:00');
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('출석 가능 시간이 아닙니다.');
+        $this->expectExceptionMessage('lastorder-attendance::attendance.not_allowed_time');
 
         $this->service->checkIn(1, '좋은 아침이에요~');
 
