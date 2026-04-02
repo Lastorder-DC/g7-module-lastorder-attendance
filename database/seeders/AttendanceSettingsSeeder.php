@@ -2,17 +2,19 @@
 
 namespace Modules\Lastorder\Attendance\Database\Seeders;
 
-use App\Models\Setting;
+use App\Services\ModuleSettingsService;
 use Illuminate\Database\Seeder;
 
 class AttendanceSettingsSeeder extends Seeder
 {
     /**
-     * 출석부 기본 설정값을 DB에 시딩
+     * 출석부 기본 설정값을 시딩
      */
     public function run(): void
     {
-        $settings = [
+        $settingsService = app(ModuleSettingsService::class);
+
+        $defaults = [
             'base_point' => 10,
             'allowed_start_time' => '00:00',
             'allowed_end_time' => '23:59',
@@ -33,11 +35,9 @@ class AttendanceSettingsSeeder extends Seeder
             'cache_ttl' => 60,
         ];
 
-        foreach ($settings as $key => $value) {
-            Setting::updateOrCreate(
-                ['module' => 'lastorder-attendance', 'key' => $key],
-                ['value' => json_encode($value)]
-            );
-        }
+        // 기존 설정값이 있으면 유지하고, 없는 항목만 기본값 적용
+        $current = $settingsService->get('lastorder-attendance') ?? [];
+        $merged = array_merge($defaults, $current);
+        $settingsService->save('lastorder-attendance', $merged);
     }
 }

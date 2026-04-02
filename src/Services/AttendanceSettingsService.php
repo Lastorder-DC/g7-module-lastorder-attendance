@@ -2,7 +2,7 @@
 
 namespace Modules\Lastorder\Attendance\Services;
 
-use App\Models\Setting;
+use App\Services\ModuleSettingsService;
 
 class AttendanceSettingsService
 {
@@ -16,10 +16,14 @@ class AttendanceSettingsService
      */
     private ?array $cachedSettings = null;
 
+    public function __construct(
+        private readonly ModuleSettingsService $moduleSettingsService,
+    ) {}
+
     /**
      * 전체 설정 조회
      *
-     * DB 설정값을 우선으로 하고, 없는 항목은 config 파일의 기본값을 사용합니다.
+     * 저장된 설정값을 우선으로 하고, 없는 항목은 config 파일의 기본값을 사용합니다.
      * 동일 요청 내에서는 캐시된 결과를 반환합니다.
      */
     public function getSettings(): array
@@ -29,19 +33,9 @@ class AttendanceSettingsService
         }
 
         $fileDefaults = config(self::MODULE, []);
+        $savedSettings = $this->moduleSettingsService->get(self::MODULE) ?? [];
 
-        $dbSettings = Setting::where('module', self::MODULE)
-            ->pluck('value', 'key')
-            ->mapWithKeys(function ($value, $key) {
-                try {
-                    return [$key => json_decode($value, true, 512, JSON_THROW_ON_ERROR)];
-                } catch (\JsonException) {
-                    return [$key => $value];
-                }
-            })
-            ->toArray();
-
-        $this->cachedSettings = array_merge($fileDefaults, $dbSettings);
+        $this->cachedSettings = array_merge($fileDefaults, $savedSettings);
 
         return $this->cachedSettings;
     }
@@ -50,7 +44,7 @@ class AttendanceSettingsService
      * 단일 설정값 조회
      *
      * 캐시된 전체 설정에서 조회합니다.
-     * DB → config 파일 → $default 순으로 우선순위를 가집니다.
+     * 저장된 설정 → config 파일 → $default 순으로 우선순위를 가집니다.
      */
     public function getSetting(string $key, mixed $default = null): mixed
     {
@@ -66,16 +60,13 @@ class AttendanceSettingsService
     /**
      * 설정 업데이트
      *
-     * 주어진 키-값 배열을 DB에 저장하고 캐시를 무효화합니다.
+     * 주어진 키-값 배열을 저장하고 캐시를 무효화합니다.
      */
     public function updateSettings(array $data): void
     {
-        foreach ($data as $key => $value) {
-            Setting::updateOrCreate(
-                ['module' => self::MODULE, 'key' => $key],
-                ['value' => json_encode($value)],
-            );
-        }
+        $current = $this->moduleSettingsService->get(self::MODULE) ?? [];
+        $merged = array_merge($current, $data);
+        $this->moduleSettingsService->save(self::MODULE, $merged);
 
         $this->clearCache();
     }

@@ -3,6 +3,27 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.3] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **모듈 설치 오류 수정 (Class "App\Models\Setting" not found)**
+  - g7 코어에 존재하지 않는 `App\Models\Setting` 모델 사용을 g7 표준 `App\Services\ModuleSettingsService`로 전환
+  - `database/seeders/AttendanceSettingsSeeder.php`, `database/seeders/DefaultGreetingsSeeder.php` 수정
+  - 모듈 설치 시 시더 실행 오류 해결
+
+- **모든 API 엔드포인트 "Target class does not exist" 오류 수정**
+  - `src/Services/AttendanceSettingsService.php`에서 `App\Models\Setting` 의존성을 `ModuleSettingsService`로 교체
+  - 설정 저장 방식을 DB 직접 접근에서 g7 표준 파일 기반 설정 시스템으로 변경
+  - 관리자 API (`admin/attendance`, `admin/settings`) 및 사용자 API (`today`, `greeting`, `status`, `my`, `calendar`) 정상 동작
+
+- **관리자 설정 저장 버튼 동작 수정**
+  - 백엔드 API 오류 해결로 설정 저장 기능 정상 동작
+
+- **사용자 출석 페이지 다국어 깨짐 수정**
+  - `resources/lang/partial/ko/user.json`, `en/user.json`에서 중복된 `nav` 키를 하나로 병합
+  - `lastorder-attendance.user.nav.this_month` 등의 번역 키가 원문 그대로 노출되던 문제 해결
+
 ## [1.0.2] - 2026-04-02
 
 ### 수정됨 (Fixed)
