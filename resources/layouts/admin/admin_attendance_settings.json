@@ -766,7 +766,7 @@
                                                                 "handler": "setState",
                                                                 "params": {
                                                                     "target": "local",
-                                                                    "form": "{{(() => { const f = {..._local.form}; const g = [...(f.default_greetings ?? [])]; g[index] = $event.target.value; f.default_greetings = g; return f; })()}}"
+                                                                    "form": "{{(function() { var f = Object.assign({}, _local.form); var g = (f.default_greetings || []).slice(); g[index] = $event.target.value; f.default_greetings = g; return f; })()}}"
                                                                 }
                                                             }
                                                         ]
@@ -783,7 +783,7 @@
                                                                 "handler": "setState",
                                                                 "params": {
                                                                     "target": "local",
-                                                                    "form": "{{(() => { const f = {..._local.form}; const g = [...(f.default_greetings ?? [])]; g.splice(index, 1); f.default_greetings = g; return f; })()}}"
+                                                                    "form": "{{(function() { var f = Object.assign({}, _local.form); var g = (f.default_greetings || []).slice(); g.splice(index, 1); f.default_greetings = g; return f; })()}}"
                                                                 }
                                                             }
                                                         ],
@@ -834,7 +834,7 @@
                                                                         "handler": "setState",
                                                                         "params": {
                                                                             "target": "local",
-                                                                            "form": "{{(() => { const f = {..._local.form}; f.default_greetings = [...(f.default_greetings ?? []), _local.newGreeting]; return f; })()}}"
+                                                                            "form": "{{(function() { var f = Object.assign({}, _local.form); f.default_greetings = (f.default_greetings || []).concat([_local.newGreeting]); return f; })()}}"
                                                                         }
                                                                     },
                                                                     {
