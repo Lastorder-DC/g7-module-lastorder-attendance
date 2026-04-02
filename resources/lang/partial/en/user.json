@@ -19,7 +19,8 @@
     "random_point": "Random Point",
     "consecutive": "Streak",
     "total_days": "Total Days",
-    "miss": "Miss"
+    "miss": "Miss",
+    "no_data": "No attendance records for today."
   },
   "summary": {
     "attendance_point": "Attendance Point",
@@ -38,6 +39,17 @@
     "guest": "Guest",
     "all_day": "All Day",
     "view_detail": "View Detail"
+  },
+  "detail": {
+    "weekly_bonus": "7-day streak bonus",
+    "monthly_bonus": "30-day streak bonus",
+    "yearly_bonus": "365-day streak bonus",
+    "rank_1": "🥇 1st place",
+    "rank_2": "🥈 2nd place",
+    "rank_3": "🥉 3rd place",
+    "category_weekly": "Weekly (7 consecutive days) - Green",
+    "category_monthly": "Monthly (30 consecutive days) - Blue",
+    "category_yearly": "Yearly (365 consecutive days) - Purple"
   },
   "nav": {
     "prev_month": "Previous",
