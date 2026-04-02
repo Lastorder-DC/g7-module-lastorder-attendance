@@ -20,6 +20,8 @@
     "consecutive": "개근",
     "total_days": "총 출석일",
     "miss": "꽝",
+    "days_streak_suffix": "일째",
+    "days_total_suffix": "일",
     "no_data": "오늘 출석 기록이 없습니다."
   },
   "summary": {

@@ -1349,13 +1349,35 @@
                                                         "type": "basic",
                                                         "name": "Div",
                                                         "props": { "className": "w-20 shrink-0 text-center px-3 py-3 text-sm" },
-                                                        "text": "{{row.consecutive_days}}"
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "text": "{{row.consecutive_days}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "text": "$t:lastorder-attendance.user.table.days_streak_suffix"
+                                                            }
+                                                        ]
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Div",
                                                         "props": { "className": "w-24 shrink-0 text-center px-3 py-3 text-sm" },
-                                                        "text": "{{row.total_days}}"
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "text": "{{row.total_days}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "text": "$t:lastorder-attendance.user.table.days_total_suffix"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             },
