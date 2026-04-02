@@ -42,12 +42,10 @@
   "nav": {
     "prev_month": "Previous",
     "this_month": "This Month",
-    "next_month": "Next"
-  },
-  "consecutive_days": "{days} days",
-  "total_days_suffix": "{days} days",
-  "nav": {
+    "next_month": "Next",
     "section_title": "Attendance",
     "attendance": "Check-in"
-  }
+  },
+  "consecutive_days": "{days} days",
+  "total_days_suffix": "{days} days"
 }

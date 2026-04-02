@@ -19,14 +19,41 @@ namespace App\Contracts\Extension {
     }
 }
 
-namespace App\Models {
-    if (! class_exists(Setting::class)) {
-        class Setting extends \Illuminate\Database\Eloquent\Model
+namespace App\Services {
+    if (! class_exists(ModuleSettingsService::class)) {
+        class ModuleSettingsService
         {
-            protected $fillable = ['module', 'key', 'value'];
+            private array $store = [];
+
+            public function get(string $identifier, ?string $key = null, mixed $default = null): mixed
+            {
+                $settings = $this->store[$identifier] ?? null;
+
+                if ($settings === null) {
+                    return $key !== null ? $default : null;
+                }
+
+                if ($key !== null) {
+                    return $settings[$key] ?? $default;
+                }
+
+                return $settings;
+            }
+
+            public function save(string $identifier, array $settings): void
+            {
+                $this->store[$identifier] = $settings;
+            }
+
+            public function reset(string $identifier): void
+            {
+                unset($this->store[$identifier]);
+            }
         }
     }
+}
 
+namespace App\Models {
     if (! class_exists(User::class)) {
         class User extends \Illuminate\Database\Eloquent\Model
         {

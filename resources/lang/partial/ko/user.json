@@ -42,12 +42,10 @@
   "nav": {
     "prev_month": "이전달",
     "this_month": "이번달",
-    "next_month": "다음달"
-  },
-  "consecutive_days": "{days}일째",
-  "total_days_suffix": "{days}일",
-  "nav": {
+    "next_month": "다음달",
     "section_title": "출석부",
     "attendance": "출석체크"
-  }
+  },
+  "consecutive_days": "{days}일째",
+  "total_days_suffix": "{days}일"
 }

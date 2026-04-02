@@ -73,7 +73,8 @@ class AdminSettingsTest extends TestCase
 
     public function test_cache_is_invalidated_after_clear(): void
     {
-        $service = new AttendanceSettingsService;
+        $mockModuleSettings = Mockery::mock(\App\Services\ModuleSettingsService::class);
+        $service = new AttendanceSettingsService($mockModuleSettings);
 
         // Use reflection to set cached settings
         $reflection = new \ReflectionClass($service);
@@ -108,7 +109,8 @@ class AdminSettingsTest extends TestCase
 
     public function test_clear_cache_resets_cached_settings(): void
     {
-        $service = new AttendanceSettingsService;
+        $mockModuleSettings = Mockery::mock(\App\Services\ModuleSettingsService::class);
+        $service = new AttendanceSettingsService($mockModuleSettings);
 
         $reflection = new \ReflectionClass($service);
         $property = $reflection->getProperty('cachedSettings');
