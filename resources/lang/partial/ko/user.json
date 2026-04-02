@@ -19,7 +19,8 @@
     "random_point": "랜덤 포인트",
     "consecutive": "개근",
     "total_days": "총 출석일",
-    "miss": "꽝"
+    "miss": "꽝",
+    "no_data": "오늘 출석 기록이 없습니다."
   },
   "summary": {
     "attendance_point": "출석점수",
@@ -38,6 +39,17 @@
     "guest": "비회원",
     "all_day": "하루 종일",
     "view_detail": "자세히 보기"
+  },
+  "detail": {
+    "weekly_bonus": "7일 연속출석 보너스",
+    "monthly_bonus": "30일 연속출석 보너스",
+    "yearly_bonus": "365일 연속출석 보너스",
+    "rank_1": "🥇 1등",
+    "rank_2": "🥈 2등",
+    "rank_3": "🥉 3등",
+    "category_weekly": "주간 (7일 연속) - 초록색",
+    "category_monthly": "월간 (30일 연속) - 파란색",
+    "category_yearly": "연간 (365일 연속) - 보라색"
   },
   "nav": {
     "prev_month": "이전달",

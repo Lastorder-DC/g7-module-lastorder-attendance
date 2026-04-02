@@ -12,7 +12,10 @@
     "initLocal": {
         "greeting": "",
         "isSaving": false,
-        "errors": null
+        "errors": null,
+        "showConsecutiveDetail": false,
+        "showCategoryDetail": false,
+        "showRankingDetail": false
     },
     "data_sources": [
         {
@@ -126,6 +129,13 @@
                 "currentMonth": "{{new Date().getMonth() + 1}}",
                 "greeting": "{{greeting?.data?.greeting ?? ''}}"
             }
+        },
+        {
+            "handler": "loadScript",
+            "params": {
+                "src": "data:text/javascript;base64,KGZ1bmN0aW9uKCl7c2V0SW50ZXJ2YWwoZnVuY3Rpb24oKXt2YXIgZT1kb2N1bWVudC5xdWVyeVNlbGVjdG9yKCcuanMtbGl2ZS1jbG9jaycpO2lmKGUpe2UudGV4dENvbnRlbnQ9bmV3IERhdGUoKS50b0xvY2FsZVN0cmluZygna28tS1InLHt5ZWFyOidudW1lcmljJyxtb250aDonMi1kaWdpdCcsZGF5OicyLWRpZ2l0Jyxob3VyOicyLWRpZ2l0JyxtaW51dGU6JzItZGlnaXQnLHNlY29uZDonMi1kaWdpdCcsaG91cjEyOmZhbHNlfSl9fSwxMDAwKX0pKCk=",
+                "id": "attendance-live-clock"
+            }
         }
     ],
     "computed": {
@@ -194,6 +204,7 @@
                                             {
                                                 "type": "basic",
                                                 "name": "Span",
+                                                "props": { "className": "js-live-clock" },
                                                 "text": "{{new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}}"
                                             }
                                         ]
@@ -468,17 +479,93 @@
                                             {
                                                 "type": "basic",
                                                 "name": "Div",
-                                                "props": { "className": "text-sm font-semibold" },
+                                                "props": { "className": "text-sm font-semibold cursor-pointer select-none" },
+                                                "actions": [
+                                                    {
+                                                        "type": "click",
+                                                        "handler": "setState",
+                                                        "params": {
+                                                            "target": "local",
+                                                            "showConsecutiveDetail": "{{!_local.showConsecutiveDetail}}"
+                                                        }
+                                                    }
+                                                ],
                                                 "children": [
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
+                                                        "props": { "className": "text-blue-600 dark:text-blue-400 hover:underline" },
                                                         "text": "$t:lastorder-attendance.user.summary.view_detail"
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
-                                                        "text": " ▼"
+                                                        "text": "{{_local.showConsecutiveDetail ? ' ▲' : ' ▼'}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "if": "{{_local.showConsecutiveDetail}}",
+                                                "props": { "className": "mt-2 text-left text-xs space-y-1 bg-gray-50 dark:bg-gray-700/50 rounded p-2" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.weekly_bonus"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-blue-600 dark:text-blue-400" },
+                                                                "text": "{{(settings?.data?.weekly_bonus ?? 100) + 'P'}}"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.monthly_bonus"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-blue-600 dark:text-blue-400" },
+                                                                "text": "{{(settings?.data?.monthly_bonus ?? 500) + 'P'}}"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.yearly_bonus"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-blue-600 dark:text-blue-400" },
+                                                                "text": "{{(settings?.data?.yearly_bonus ?? 5000) + 'P'}}"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
@@ -537,17 +624,93 @@
                                             {
                                                 "type": "basic",
                                                 "name": "Div",
-                                                "props": { "className": "text-sm font-semibold" },
+                                                "props": { "className": "text-sm font-semibold cursor-pointer select-none" },
+                                                "actions": [
+                                                    {
+                                                        "type": "click",
+                                                        "handler": "setState",
+                                                        "params": {
+                                                            "target": "local",
+                                                            "showRankingDetail": "{{!_local.showRankingDetail}}"
+                                                        }
+                                                    }
+                                                ],
                                                 "children": [
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
+                                                        "props": { "className": "text-blue-600 dark:text-blue-400 hover:underline" },
                                                         "text": "$t:lastorder-attendance.user.summary.view_detail"
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
-                                                        "text": " ▼"
+                                                        "text": "{{_local.showRankingDetail ? ' ▲' : ' ▼'}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "if": "{{_local.showRankingDetail}}",
+                                                "props": { "className": "mt-2 text-left text-xs space-y-1 bg-gray-50 dark:bg-gray-700/50 rounded p-2" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-yellow-600 dark:text-yellow-400" },
+                                                                "text": "$t:lastorder-attendance.user.detail.rank_1"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-yellow-600 dark:text-yellow-400" },
+                                                                "text": "{{(settings?.data?.rank_1_bonus ?? 50) + 'P'}}"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-500 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.rank_2"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-gray-500 dark:text-gray-300" },
+                                                                "text": "{{(settings?.data?.rank_2_bonus ?? 30) + 'P'}}"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex justify-between" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-orange-600 dark:text-orange-400" },
+                                                                "text": "$t:lastorder-attendance.user.detail.rank_3"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "font-bold text-orange-600 dark:text-orange-400" },
+                                                                "text": "{{(settings?.data?.rank_3_bonus ?? 20) + 'P'}}"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
@@ -642,17 +805,90 @@
                                             {
                                                 "type": "basic",
                                                 "name": "Div",
-                                                "props": { "className": "text-sm font-semibold" },
+                                                "props": { "className": "text-sm font-semibold cursor-pointer select-none" },
+                                                "actions": [
+                                                    {
+                                                        "type": "click",
+                                                        "handler": "setState",
+                                                        "params": {
+                                                            "target": "local",
+                                                            "showCategoryDetail": "{{!_local.showCategoryDetail}}"
+                                                        }
+                                                    }
+                                                ],
                                                 "children": [
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
+                                                        "props": { "className": "text-blue-600 dark:text-blue-400 hover:underline" },
                                                         "text": "$t:lastorder-attendance.user.summary.view_detail"
                                                     },
                                                     {
                                                         "type": "basic",
                                                         "name": "Span",
-                                                        "text": " ▼"
+                                                        "text": "{{_local.showCategoryDetail ? ' ▲' : ' ▼'}}"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "name": "Div",
+                                                "if": "{{_local.showCategoryDetail}}",
+                                                "props": { "className": "mt-2 text-left text-xs space-y-1.5 bg-gray-50 dark:bg-gray-700/50 rounded p-2" },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex items-center gap-2" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "inline-block w-3 h-3 rounded-full bg-green-500 shrink-0" }
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.category_weekly"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex items-center gap-2" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "inline-block w-3 h-3 rounded-full bg-blue-500 shrink-0" }
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.category_monthly"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Div",
+                                                        "props": { "className": "flex items-center gap-2" },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "inline-block w-3 h-3 rounded-full bg-purple-500 shrink-0" }
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Span",
+                                                                "props": { "className": "text-gray-600 dark:text-gray-300" },
+                                                                "text": "$t:lastorder-attendance.user.detail.category_yearly"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
@@ -682,26 +918,24 @@
                                     {
                                         "id": "calendar_days_list",
                                         "type": "basic",
-                                        "name": "ForEach",
-                                        "props": {
-                                            "items": "{{(() => { const total = _computed.daysInMonth; const days = _computed.calendarDays; const result = []; for (let d = 1; d <= total; d++) { const dayData = days.find(dd => { const date = dd.date; const dayNum = parseInt(date.split('-').pop(), 10); return dayNum === d; }); result.push({ day: d, status: dayData?.status ?? 'future' }); } return result; })()}}"
+                                        "name": "Span",
+                                        "iteration": {
+                                            "source": "{{(() => { const total = _computed.daysInMonth; const days = _computed.calendarDays; const result = []; for (let d = 1; d <= total; d++) { const dayData = days.find(function(dd) { const date = dd.date; const dayNum = parseInt(date.split('-').pop(), 10); return dayNum === d; }); result.push({ day: d, status: dayData?.status ?? 'future' }); } return result; })()}}",
+                                            "item_var": "item",
+                                            "index_var": "index"
                                         },
-                                        "template": {
-                                            "type": "basic",
-                                            "name": "Span",
-                                            "classMap": {
-                                                "key": "{{item.status}}",
-                                                "variants": {
-                                                    "attended": "text-blue-600 dark:text-blue-400 font-bold",
-                                                    "absent": "text-red-500 dark:text-red-400 font-bold",
-                                                    "future": "text-gray-400 dark:text-gray-500"
-                                                }
-                                            },
-                                            "props": {
-                                                "className": "inline-block w-8 h-8 leading-8 text-center text-sm rounded-full cursor-default"
-                                            },
-                                            "text": "{{item.day}}"
-                                        }
+                                        "classMap": {
+                                            "key": "{{item.status}}",
+                                            "variants": {
+                                                "attended": "text-blue-600 dark:text-blue-400 font-bold",
+                                                "absent": "text-red-500 dark:text-red-400 font-bold",
+                                                "future": "text-gray-400 dark:text-gray-500"
+                                            }
+                                        },
+                                        "props": {
+                                            "className": "inline-block w-8 h-8 leading-8 text-center text-sm rounded-full cursor-default"
+                                        },
+                                        "text": "{{item.day}}"
                                     }
                                 ]
                             },
@@ -1117,7 +1351,7 @@
                                                 "name": "Div",
                                                 "if": "{{!today?.data?.data || today.data.data.length === 0}}",
                                                 "props": { "className": "text-center px-3 py-8 text-gray-500 dark:text-gray-400" },
-                                                "text": "$t:lastorder-attendance.admin.attendance.no_data"
+                                                "text": "$t:lastorder-attendance.user.table.no_data"
                                             }
                                         ]
                                     }

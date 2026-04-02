@@ -67,7 +67,7 @@ class AttendanceController extends BaseApiController
 
             $attendances = $this->attendanceService->getTodayAttendances($page, $perPage);
 
-            return $this->successWithResource(
+            return $this->success(
                 'common.success',
                 AttendanceListResource::collection($attendances),
             );
