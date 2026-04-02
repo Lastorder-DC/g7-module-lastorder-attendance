@@ -3,6 +3,15 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.6] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **사용자 출석 테이블 컴포넌트 렌더링 오류 수정**
+  - sirsoft-basic 사용자 템플릿의 `components.json` 매니페스트에 `Tr`, `Td`, `Th`, `Thead`, `Tbody` 컴포넌트가 등록되어 있지 않아 DynamicRenderer가 해당 컴포넌트를 찾지 못하는 문제 수정
+  - `Table`/`Tr`/`Th`/`Td` 기반 테이블 구조를 매니페스트에 등록된 `Div` 컴포넌트와 Flexbox CSS를 사용한 레이아웃으로 전면 교체
+  - 동일한 시각적 결과를 유지하면서 등록된 컴포넌트만 사용하도록 변경
+
 ## [1.0.5] - 2026-04-02
 
 ### 수정됨 (Fixed)
