@@ -3,6 +3,15 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.7] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **사용자 출석 페이지 "비회원" 표시 오류 수정**
+  - 레이아웃 JSON의 `computed` 속성에서 존재하지 않는 `_auth?.user` 변수를 참조하여 로그인 상태에서도 항상 비회원으로 표시되고 출석체크가 불가능했던 문제 수정
+  - g7 프레임워크 표준인 `_global.currentUser` 변수로 변경 (`_user_base` 레이아웃의 `current_user` 데이터소스에서 `initGlobal: "currentUser"`로 제공)
+  - `isLoggedIn`, `isAdmin`, `todayAttendance` computed 속성의 인증 상태 참조를 모두 수정
+
 ## [1.0.6] - 2026-04-02
 
 ### 수정됨 (Fixed)

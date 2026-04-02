@@ -129,12 +129,12 @@
         }
     ],
     "computed": {
-        "isLoggedIn": "{{!!_auth?.user}}",
-        "isAdmin": "{{!!_auth?.user?.is_admin}}",
+        "isLoggedIn": "{{!!_global.currentUser?.uuid}}",
+        "isAdmin": "{{!!_global.currentUser?.is_admin}}",
         "hasCheckedIn": "{{status?.data?.has_checked_in_today === true || my?.data?.has_checked_in_today === true}}",
         "canCheckIn": "{{_computed.isLoggedIn && status?.data?.can_check_in === true}}",
         "isWithinAllowedTime": "{{status?.data?.is_within_allowed_time !== false}}",
-        "todayAttendance": "{{(() => { const list = today?.data?.data ?? []; const user = _auth?.user; if (!user || !list.length) return null; return list.find(a => a.user?.id === user.id) ?? null; })()}}",
+        "todayAttendance": "{{(() => { const list = today?.data?.data ?? []; const user = _global.currentUser; if (!user || !list.length) return null; return list.find(a => a.user?.id === user.id) ?? null; })()}}",
         "attendancePoint": "{{_computed.todayAttendance?.base_point ?? 0}}",
         "randomPoint": "{{_computed.todayAttendance?.random_point ?? 0}}",
         "rankingPoint": "{{(() => { const a = _computed.todayAttendance; if (!a) return 0; const rank = a.daily_rank; if (rank === 1) return settings?.data?.rank_1_bonus ?? 0; if (rank === 2) return settings?.data?.rank_2_bonus ?? 0; if (rank === 3) return settings?.data?.rank_3_bonus ?? 0; return 0; })()}}",
