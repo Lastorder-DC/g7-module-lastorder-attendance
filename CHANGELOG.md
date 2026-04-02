@@ -3,6 +3,24 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.2] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **모듈 설치 및 DB API 서버 오류 수정**
+  - `composer.json`에서 호스트 애플리케이션이 이미 제공하는 프레임워크 의존성(`illuminate/database`, `illuminate/support`, `nesbot/carbon`)을 `require`에서 제거
+  - 모듈 설치 시 Composer 의존성 충돌로 인한 설치 실패 및 ServiceProvider 미등록 문제 해결
+  - 이로 인해 발생하던 모든 DB 관련 API 엔드포인트 서버 오류 해결
+  - 프레임워크 패키지들은 개발/테스트용으로 `require-dev`로 이동
+
+### 추가됨 (Added)
+
+- **사용자 템플릿 내비게이션 링크 추가**
+  - `resources/extensions/user-navigation.json` 레이아웃 확장 파일 추가
+  - 기본 사용자 템플릿(`_user_base`) 모바일 내비게이션 드로어에 출석체크 메뉴 항목 추가
+  - 데스크톱 헤더에 출석체크 링크 추가 (extraMenuItems inject_props)
+  - 한국어/영어 내비게이션 번역 추가 (`user.nav.section_title`, `user.nav.attendance`)
+
 ## [1.0.1] - 2026-04-02
 
 ### 수정됨 (Fixed)
