@@ -3,6 +3,23 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.5] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **사용자 출석 테이블 Thead/Tbody 컴포넌트 오류 수정**
+  - 사용자 템플릿(sirsoft-basic)에 등록되지 않은 `Thead`, `Tbody` 컴포넌트 사용으로 테이블이 렌더링되지 않던 문제 수정
+  - `Table` 컴포넌트의 직접 자식으로 `Tr` 요소를 배치하는 플랫 구조로 변경
+
+- **자동출석 인삿말 빈 값 저장 불가 수정**
+  - `auto_attendance_greeting` 필드에 `nullable` 유효성 검사 규칙 추가
+  - Laravel의 `ConvertEmptyStringsToNull` 미들웨어가 빈 문자열을 `null`로 변환 시 `string` 규칙에 의해 유효성 검사가 실패하던 문제 해결
+  - 빈 값 입력 시 기본 인삿말에서 랜덤으로 사용되도록 정상 동작
+
+- **관리자 설정 인삿말 추가 액션 오류 수정**
+  - 액션 표현식에서 화살표 함수(`() => {}`)의 `=>`가 HTML 엔티티 `=&gt;`로 인코딩되어 "Invalid left-hand side in assignment" 오류가 발생하던 문제 수정
+  - 일반 함수 표현식(`function() {}`)으로 변경하여 HTML 인코딩 문제 회피
+
 ## [1.0.4] - 2026-04-02
 
 ### 수정됨 (Fixed)

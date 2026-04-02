@@ -24,7 +24,7 @@ class UpdateSettingsRequest extends FormRequest
             'allowed_start_time' => ['sometimes', 'date_format:H:i'],
             'allowed_end_time' => ['sometimes', 'date_format:H:i'],
             'auto_attendance_enabled' => ['sometimes', 'boolean'],
-            'auto_attendance_greeting' => ['sometimes', 'string', 'max:200'],
+            'auto_attendance_greeting' => ['sometimes', 'nullable', 'string', 'max:200'],
             'rank_1_bonus' => ['sometimes', 'integer', 'min:0', 'max:100000'],
             'rank_2_bonus' => ['sometimes', 'integer', 'min:0', 'max:100000'],
             'rank_3_bonus' => ['sometimes', 'integer', 'min:0', 'max:100000'],
