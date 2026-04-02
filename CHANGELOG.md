@@ -3,6 +3,26 @@
 이 파일은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/) 형식을 따르며,
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/) 을 준수합니다.
 
+## [1.0.4] - 2026-04-02
+
+### 수정됨 (Fixed)
+
+- **관리자 설정 저장 버튼 동작 수정**
+  - PageHeader의 `actions` prop은 `onClick` 콜백을 기대하지만, 레이아웃 JSON의 핸들러 정의는 자동 변환되지 않아 버튼이 동작하지 않던 문제 수정
+  - PageHeader의 `children`으로 Button 컴포넌트를 직접 렌더링하는 방식으로 변경 (g7 모듈 표준 패턴)
+
+- **관리자 설정 인삿말 목록 표시 및 추가 불가 수정**
+  - g7 템플릿 엔진에 존재하지 않는 `ForEach` (type: basic) 컴포넌트 사용을 g7 표준 `iteration` 속성으로 변경
+  - 기본 인삿말 목록이 정상적으로 표시되고 추가/삭제 가능
+
+- **관리자 출석 현황 테이블 렌더링 오류 수정**
+  - g7 관리자 템플릿에 존재하지 않는 `DataTable` 컴포넌트를 `DataGrid` 컴포넌트로 교체
+  - 컬럼 정의를 DataGrid 규격에 맞게 변환 (`key` → `field`, `label` → `header`, `render` → `cellChildren`)
+
+- **사용자 출석 페이지 테이블 렌더링 및 "비회원" 표시 오류 수정**
+  - 사용자 템플릿(sirsoft-basic)에 존재하지 않는 `DataTable` 컴포넌트를 기본 Table/Thead/Tbody/Tr/Th/Td 컴포넌트와 `iteration`으로 교체
+  - 컴포넌트 렌더링 오류로 인해 `_auth` 상태 참조가 실패하여 로그인 상태에서도 "비회원"으로 표시되던 문제 해결
+
 ## [1.0.3] - 2026-04-02
 
 ### 수정됨 (Fixed)

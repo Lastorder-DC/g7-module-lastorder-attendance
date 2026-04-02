@@ -978,68 +978,171 @@
                         "children": [
                             {
                                 "id": "today_table",
-                                "type": "composite",
-                                "name": "DataTable",
+                                "type": "basic",
+                                "name": "Div",
                                 "props": {
-                                    "columns": [
-                                        {
-                                            "key": "daily_rank",
-                                            "label": "$t:lastorder-attendance.user.table.rank",
-                                            "className": "text-center w-16",
-                                            "cellClassName": "text-center font-semibold text-gray-700 dark:text-gray-300"
+                                    "className": "w-full overflow-x-auto"
+                                },
+                                "children": [
+                                    {
+                                        "type": "basic",
+                                        "name": "Table",
+                                        "props": {
+                                            "className": "w-full text-sm"
                                         },
-                                        {
-                                            "key": "attendance_time",
-                                            "label": "$t:lastorder-attendance.user.table.time",
-                                            "className": "text-center w-24",
-                                            "cellClassName": "text-center text-sm text-gray-600 dark:text-gray-400"
-                                        },
-                                        {
-                                            "key": "greeting",
-                                            "label": "$t:lastorder-attendance.user.table.greeting",
-                                            "className": "text-center",
-                                            "cellClassName": "text-center text-sm text-gray-600 dark:text-gray-400"
-                                        },
-                                        {
-                                            "key": "user.name",
-                                            "label": "$t:lastorder-attendance.user.table.nickname",
-                                            "className": "text-center",
-                                            "cellClassName": "text-center font-medium text-gray-900 dark:text-white"
-                                        },
-                                        {
-                                            "key": "base_point",
-                                            "label": "$t:lastorder-attendance.user.table.point",
-                                            "className": "text-center w-20",
-                                            "cellClassName": "text-center text-sm"
-                                        },
-                                        {
-                                            "key": "random_point",
-                                            "label": "$t:lastorder-attendance.user.table.random_point",
-                                            "className": "text-center w-28",
-                                            "cellClassName": "text-center text-sm",
-                                            "render": "{{item.random_point > 0 ? ('● ' + item.random_point) : $t('lastorder-attendance.user.table.miss')}}"
-                                        },
-                                        {
-                                            "key": "consecutive_days",
-                                            "label": "$t:lastorder-attendance.user.table.consecutive",
-                                            "className": "text-center w-20",
-                                            "cellClassName": "text-center text-sm",
-                                            "render": "{{item.consecutive_days + '일째'}}"
-                                        },
-                                        {
-                                            "key": "total_days",
-                                            "label": "$t:lastorder-attendance.user.table.total_days",
-                                            "className": "text-center w-24",
-                                            "cellClassName": "text-center text-sm",
-                                            "render": "{{item.total_days + '일'}}"
-                                        }
-                                    ],
-                                    "data": "{{today?.data?.data ?? []}}",
-                                    "emptyText": "$t:lastorder-attendance.admin.attendance.no_data",
-                                    "striped": true,
-                                    "hover": true,
-                                    "className": "w-full"
-                                }
+                                        "children": [
+                                            {
+                                                "type": "basic",
+                                                "name": "Thead",
+                                                "props": {
+                                                    "className": "bg-gray-50 dark:bg-gray-700"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "basic",
+                                                        "name": "Tr",
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-16 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.rank"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-24 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.time"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.greeting"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.nickname"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-20 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.point"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-28 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.random_point"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-20 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.consecutive"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Th",
+                                                                "props": { "className": "text-center w-24 px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase" },
+                                                                "text": "$t:lastorder-attendance.user.table.total_days"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "name": "Tbody",
+                                                "props": {
+                                                    "className": "divide-y divide-gray-200 dark:divide-gray-700"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "id": "today_table_row",
+                                                        "type": "basic",
+                                                        "name": "Tr",
+                                                        "iteration": {
+                                                            "source": "{{today?.data?.data ?? []}}",
+                                                            "item_var": "row",
+                                                            "index_var": "rowIndex"
+                                                        },
+                                                        "props": {
+                                                            "className": "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 font-semibold text-gray-700 dark:text-gray-300" },
+                                                                "text": "{{row.daily_rank}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm text-gray-600 dark:text-gray-400" },
+                                                                "text": "{{row.attendance_time}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm text-gray-600 dark:text-gray-400" },
+                                                                "text": "{{row.greeting}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 font-medium text-gray-900 dark:text-white" },
+                                                                "text": "{{row.user?.name ?? ''}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm" },
+                                                                "text": "{{row.base_point}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm" },
+                                                                "text": "{{row.random_point > 0 ? ('● ' + row.random_point) : $t('lastorder-attendance.user.table.miss')}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm" },
+                                                                "text": "{{row.consecutive_days + '일째'}}"
+                                                            },
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "className": "text-center px-3 py-3 text-sm" },
+                                                                "text": "{{row.total_days + '일'}}"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": "today_table_empty",
+                                                        "type": "basic",
+                                                        "name": "Tr",
+                                                        "if": "{{!today?.data?.data || today.data.data.length === 0}}",
+                                                        "children": [
+                                                            {
+                                                                "type": "basic",
+                                                                "name": "Td",
+                                                                "props": { "colSpan": 8, "className": "text-center px-3 py-8 text-gray-500 dark:text-gray-400" },
+                                                                "text": "$t:lastorder-attendance.admin.attendance.no_data"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             {
                                 "id": "today_pagination",
