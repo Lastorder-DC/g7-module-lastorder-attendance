@@ -1,8 +1,0 @@
-{
-  "user": {
-    "$partial": "partial/en/user.json"
-  },
-  "admin": {
-    "$partial": "partial/en/admin.json"
-  }
-}
