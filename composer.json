@@ -1,0 +1,23 @@
+{
+    "name": "modules/lastorder-attendance",
+    "description": "Daily attendance check-in and point reward module for Gnuboard7",
+    "type": "g7-module",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "mockery/mockery": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Lastorder\\Attendance\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Lastorder\\Attendance\\Tests\\": "tests/"
+        }
+    }
+}

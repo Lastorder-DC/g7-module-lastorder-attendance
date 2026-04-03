@@ -1,0 +1,21 @@
+{
+    "identifier": "lastorder-attendance",
+    "vendor": "lastorder",
+    "name": {
+        "ko": "출석부",
+        "en": "Attendance"
+    },
+    "version": "1.0.9",
+    "license": "MIT",
+    "description": {
+        "ko": "매일 출석 체크 및 포인트 보상 모듈",
+        "en": "Daily attendance check-in and point reward module"
+    },
+    "g7_version": ">=7.0.0-beta.1",
+    "dependencies": {
+        "modules": {},
+        "plugins": {}
+    },
+    "github_url": "https://github.com/Lastorder-DC/g7-module-lastorder-attendance",
+    "github_changelog_url": "https://github.com/Lastorder-DC/g7-module-lastorder-attendance/blob/main/CHANGELOG.md"
+}

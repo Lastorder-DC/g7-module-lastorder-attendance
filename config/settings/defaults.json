@@ -1,0 +1,84 @@
+{
+    "_meta": {
+        "version": "1.0.0",
+        "description": "출석부 모듈 설정",
+        "categories": ["basic", "time", "bonus", "random", "greetings"]
+    },
+    "defaults": {
+        "basic": {
+            "base_point": 10,
+            "auto_attendance_enabled": false
+        },
+        "time": {
+            "time_restriction_enabled": false,
+            "start_hour": 0,
+            "end_hour": 24
+        },
+        "bonus": {
+            "rank_1st_point": 100,
+            "rank_2nd_point": 50,
+            "rank_3rd_point": 30,
+            "consecutive_weekly_point": 100,
+            "consecutive_monthly_point": 500,
+            "consecutive_yearly_point": 5000
+        },
+        "random": {
+            "random_point_enabled": true,
+            "random_point_min": 1,
+            "random_point_max": 200
+        },
+        "greetings": {
+            "default_greetings": [
+                "좋은 하루 되세요!",
+                "오늘도 화이팅!",
+                "출석 완료!",
+                "ㅋㅋㅋㅋ",
+                "안녕하세요~",
+                "쪽쪽아웅",
+                "ㅈㅈㅈㅈ"
+            ]
+        }
+    },
+    "frontend_schema": {
+        "basic": {
+            "expose": true,
+            "fields": {
+                "base_point": { "expose": true },
+                "auto_attendance_enabled": { "expose": true }
+            }
+        },
+        "time": {
+            "expose": true,
+            "fields": {
+                "time_restriction_enabled": { "expose": true },
+                "start_hour": { "expose": true },
+                "end_hour": { "expose": true }
+            }
+        },
+        "bonus": {
+            "expose": true,
+            "fields": {
+                "rank_1st_point": { "expose": true },
+                "rank_2nd_point": { "expose": true },
+                "rank_3rd_point": { "expose": true },
+                "consecutive_weekly_point": { "expose": true },
+                "consecutive_monthly_point": { "expose": true },
+                "consecutive_yearly_point": { "expose": true }
+            }
+        },
+        "random": {
+            "expose": true,
+            "fields": {
+                "random_point_enabled": { "expose": true },
+                "random_point_min": { "expose": true },
+                "random_point_max": { "expose": true }
+            }
+        },
+        "greetings": {
+            "expose": true,
+            "fields": {
+                "default_greetings": { "expose": true }
+            }
+        }
+    }
+}
