@@ -37,26 +37,12 @@ class AttendanceRepository implements AttendanceRepositoryInterface
 
     /**
      * 연속출석 일수 계산 (어제까지)
+     *
+     * 단일 쿼리로 최근 출석 날짜를 조회한 뒤 PHP에서 연속일수 계산
      */
     public function getConsecutiveDays(int $userId): int
     {
-        $consecutiveDays = 0;
-        $checkDate = Carbon::yesterday();
-
-        while (true) {
-            $exists = Attendance::where('user_id', $userId)
-                ->where('attended_at', $checkDate->toDateString())
-                ->exists();
-
-            if (!$exists) {
-                break;
-            }
-
-            $consecutiveDays++;
-            $checkDate = $checkDate->subDay();
-        }
-
-        return $consecutiveDays;
+        return $this->calculateConsecutiveFromDate($userId, Carbon::yesterday());
     }
 
     /**
@@ -147,20 +133,39 @@ class AttendanceRepository implements AttendanceRepositoryInterface
      */
     public function recalculateConsecutiveDays(int $userId): int
     {
+        return $this->calculateConsecutiveFromDate($userId, Carbon::today());
+    }
+
+    /**
+     * 특정 날짜부터 역순으로 연속출석 일수 계산
+     *
+     * 단일 쿼리로 최근 출석 날짜를 조회한 뒤 PHP에서 연속 여부 판단
+     */
+    private function calculateConsecutiveFromDate(int $userId, Carbon $startDate): int
+    {
+        $dates = Attendance::where('user_id', $userId)
+            ->where('attended_at', '<=', $startDate->toDateString())
+            ->orderBy('attended_at', 'desc')
+            ->pluck('attended_at')
+            ->map(function ($date) {
+                return Carbon::parse($date)->format('Y-m-d');
+            })
+            ->toArray();
+
+        if (empty($dates)) {
+            return 0;
+        }
+
         $consecutiveDays = 0;
-        $checkDate = Carbon::today();
+        $expectedDate = $startDate->copy();
 
-        while (true) {
-            $exists = Attendance::where('user_id', $userId)
-                ->where('attended_at', $checkDate->toDateString())
-                ->exists();
-
-            if (!$exists) {
+        foreach ($dates as $date) {
+            if ($date === $expectedDate->format('Y-m-d')) {
+                $consecutiveDays++;
+                $expectedDate->subDay();
+            } else {
                 break;
             }
-
-            $consecutiveDays++;
-            $checkDate = $checkDate->subDay();
         }
 
         return $consecutiveDays;
